@@ -40,13 +40,8 @@ const IS_API_ROUTE = /^src\/app\/api\/.+\/route\.tsx?$/;
 // message through sanitizeErrorMessage()/buildErrorBody()/makeExecutorErrorResult().
 // Do NOT add new entries without a justification — that defeats the gate.
 export const KNOWN_MISSING_ERROR_HELPER = new Set([
-  // --- original open-sse/executors + handlers scope (pre-6A.8) ---
-  // --- 6A.8 expanded scope: src/app/api/**/route.ts pre-existing violations ---
-  // TODO(6A.8): pre-existing, triage — route through buildErrorBody()/sanitizeErrorMessage()
-  // open-sse/executors/muse-spark-web.ts has its own local buildErrorResponse() + errorResult()
-  // that follow the same contract (wraps message inside error:{message,type}). The helper
-  // import would create a circular dep. Verified: no raw internal-stack-leak path.
-  "open-sse/executors/muse-spark-web.ts",
+  // Keep empty unless a file still lacks buildErrorBody()/sanitizeErrorMessage()
+  // and cannot import open-sse/utils/error (e.g. circular dep). Stale entries fail CI.
 ]);
 
 // Import specifiers that count as "uses the error helper" (path ends in utils/error).
