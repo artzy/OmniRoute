@@ -371,9 +371,15 @@ jobs:
       # when oasdiff is absent or the base spec can't be resolved — a missing
       # measurement never blocks. BASE_REF is read by the script from the env
       # (never interpolated into a shell body) — workflow-injection-safe.
+      # BASE_REF must be the contract we are changing *from*:
+      #   • pull_request → github.base_ref (target branch)
+      #   • push → github.event.before (previous tip on the same branch)
+      # Falling back to origin/release/vX.Y.Z on push-to-main is wrong when main
+      # and the active release have diverged (release-ahead paths look like
+      # "removals" on main and false-red the gate — run 30229971936).
       - name: OpenAPI breaking-change (oasdiff, ratchet, blocking)
         env:
-          BASE_REF: ${{ github.base_ref }}
+          BASE_REF: ${{ github.event.pull_request.base.ref || github.event.before }}
         run: npm run check:openapi-breaking -- --ratchet
 
   docs-sync-strict:
