@@ -1,3 +1,5 @@
+# Version-update PRs are paused (open-pull-requests-limit: 0): this repo is a frozen
+# release copy. Raise the limits again to resume.
 version: 2
 updates:
   - package-ecosystem: "npm"
@@ -7,7 +9,7 @@ updates:
       day: "monday"
     commit-message:
       prefix: "deps"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     groups:
       production:
         dependency-type: "production"
@@ -49,11 +51,13 @@ updates:
       - dependency-name: "@huggingface/transformers"
 
   - package-ecosystem: "github-actions"
+    open-pull-requests-limit: 0  # version updates paused (fixed release copy)
     directory: "/"
     schedule:
       interval: "weekly"
 
   - package-ecosystem: "npm"
+    open-pull-requests-limit: 0  # version updates paused (fixed release copy)
     directory: "/electron"
     schedule:
       interval: "weekly"
@@ -62,6 +66,7 @@ updates:
       prefix: "deps"
 
   - package-ecosystem: "docker"
+    open-pull-requests-limit: 0  # version updates paused (fixed release copy)
     directory: "/"
     schedule:
       interval: "weekly"
